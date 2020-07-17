@@ -38,18 +38,15 @@ def create_clusters(reference_elements, elements_to_organise):
 
 
 def centroid_of(lst):
-    xG = 0
-    yG = 0
+    xG = yG = 0
     for a in range(len(lst)):
-        xG += lst[a].x
-        yG += lst[a].y
-    xG /= len(lst)
-    yG /= len(lst)
+        xG += lst[a].x / len(lst)
+        yG += lst[a].y / len(lst)
     return Centroid(xG, yG)
 
 
-NUMBER_VERTICES = 500
-NUMBER_CLUSTERS = 3
+NUMBER_VERTICES = 100
+NUMBER_CLUSTERS = 4
 WIDTH = HEIGHT = 100  # dimension of the canvas
 VERTEX_SIZE = 150
 COLORS = ['orange', 'red', 'purple', 'green', 'black']
@@ -75,20 +72,17 @@ initial_vertices = sample(vertices, NUMBER_CLUSTERS)
 pos = nx.get_node_attributes(G, 'pos')
 node_color = []
 for vertex in vertices:
-    if vertex in initial_vertices:
-        node_color.append('red')
-    else:
-        node_color.append('black')
+    new_color = 'red' if vertex in initial_vertices else 'black'
+    node_color.append(new_color)
+
 plt.figure(str(NUMBER_CLUSTERS) + "-means | initial random selection")
 nx.draw(G, pos, node_size=VERTEX_SIZE, node_color=node_color)
 
 clusters, node_color = create_clusters(initial_vertices, vertices)
-print("Percentages of the first iteration :")
-for cluster in clusters:
-    print(len(cluster) * 100 / NUMBER_VERTICES)
 plt.figure(str(NUMBER_CLUSTERS) + "-means | First iteration")
 nx.draw(G, pos, node_size=VERTEX_SIZE, node_color=node_color)
 
+# --------------------------------------------------------------
 previous_state = clusters
 current_state = []
 iteration = 0
@@ -101,10 +95,7 @@ while previous_state != current_state:
     clusters, node_color = create_clusters(centroids, vertices)
     current_state = clusters
     iteration += 1
-
-print("Percentages of the final iteration :")
-for cluster in clusters:
-    print(len(cluster) * 100 / NUMBER_VERTICES)
+# --------------------------------------------------------------
 
 plt.figure(str(NUMBER_CLUSTERS) + "-means | Iteration " + str(iteration))
 nx.draw(G, pos, node_size=VERTEX_SIZE, node_color=node_color)
