@@ -4,7 +4,7 @@ const Y = [6, 6, 10, 9, 13.2, 6.8, 7.2, 5.8, 10.2, 10.8, 13.4, 35.2, 35.2, 35, 3
 
 const NUMBER_VERTICES = 50;
 const RADIUS = 6;
-const SQUARE_SIDE = 60;
+const SQUARE_SIDE = 100;
 
 let vertices = [];
 let counts = [];
@@ -22,14 +22,7 @@ function setup() {
     vertices[i] = new Vertex(X[i] * scaleX, Y[i] * scaleY, color(255, 0, 0));
   }
 
-  for (let i = 0; i < width; i += SQUARE_SIDE) {
-    for (let j = 0; j < height; j += SQUARE_SIDE) {
-      line(0, i, width, i);
-      line(j, 0, j, height);
-    }
-  }
-
-  // initialise counts
+  // initialise counts matrix
   for (let i = 0; i < width / SQUARE_SIDE; i++) {
     counts.push([]);
   }
@@ -74,7 +67,7 @@ function maximum(list) {
   for (let i = 0; i < list.length; i++) {
     for (let j = 0; j < list.length; j++) {
       if (list[i][j] > record) {
-        record = list[i][j]
+        record = list[i][j];
       }
     }
   }
